@@ -1,4 +1,4 @@
-# Intranet.Interview.App_Ver2
+# Intranet.Interview.App
 # Dynamic Form Generator
 
 ## Overview
@@ -102,14 +102,15 @@ The application uses Blazor WebAssembly for the front-end and .NET 8 for the dev
     }
   ]
 }
-
+```
 ## Design Considerations and Architecture Decisions
+
+### Component-based Architecture
+The application is built using a **component-based architecture**, with each field type (e.g., text inputs, checkboxes, dropdowns) being its own reusable component. This structure allows for easy maintenance and the addition of new field types without impacting other parts of the application.
 
 ### Separation of Concerns
 The application follows the **Separation of Concerns (SoC)** principle, ensuring that each component has a distinct responsibility. The form rendering logic is separated from validation and data handling. This modular approach makes it easier to maintain and extend the application as it grows.
 
-### Component-based Architecture
-The application is built using a **component-based architecture**, with each field type (e.g., text inputs, checkboxes, dropdowns) being its own reusable component. This structure allows for easy maintenance and the addition of new field types without impacting other parts of the application.
 
 ### Inversion of Control (IoC) and Dependency Injection (DI)
 By leveraging **Inversion of Control (IoC)** and **Dependency Injection (DI)**, the application achieves loose coupling between components. Services like form data processing, validation, and submission are injected into the components, making it easier to swap or extend functionality without affecting the overall architecture.
@@ -122,4 +123,3 @@ The modular design ensures that new features, like additional form field types o
 
 ### Security Considerations
 The form includes **client-side validation** and **sanitization of user input** to protect against malicious attacks. All data exchanges between the client and server are conducted over **HTTPS** to ensure secure communication.
-
