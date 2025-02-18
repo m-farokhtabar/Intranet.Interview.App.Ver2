@@ -102,3 +102,24 @@ The application uses Blazor WebAssembly for the front-end and .NET 8 for the dev
     }
   ]
 }
+
+## Design Considerations and Architecture Decisions
+
+### Separation of Concerns
+The application follows the **Separation of Concerns (SoC)** principle, ensuring that each component has a distinct responsibility. The form rendering logic is separated from validation and data handling. This modular approach makes it easier to maintain and extend the application as it grows.
+
+### Component-based Architecture
+The application is built using a **component-based architecture**, with each field type (e.g., text inputs, checkboxes, dropdowns) being its own reusable component. This structure allows for easy maintenance and the addition of new field types without impacting other parts of the application.
+
+### Inversion of Control (IoC) and Dependency Injection (DI)
+By leveraging **Inversion of Control (IoC)** and **Dependency Injection (DI)**, the application achieves loose coupling between components. Services like form data processing, validation, and submission are injected into the components, making it easier to swap or extend functionality without affecting the overall architecture.
+
+### MVC Web API for Form Data
+A simple **MVC Web API** is used to fetch the form configuration data. This decouples the front-end from the back-end and allows for easy updates to the form structure. The API serves dynamic form data in **JSON format**, which is then processed by the front-end components.
+
+### Scalability and Extensibility
+The modular design ensures that new features, like additional form field types or back-end integrations, can be added without significant changes to the existing code. The use of a Web API also supports future scalability by allowing easy integration with databases or third-party services.
+
+### Security Considerations
+The form includes **client-side validation** and **sanitization of user input** to protect against malicious attacks. All data exchanges between the client and server are conducted over **HTTPS** to ensure secure communication.
+
