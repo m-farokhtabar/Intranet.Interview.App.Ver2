@@ -5,7 +5,7 @@
       "type": "text",
       "label": "Name",
       "required": true,
-      "PlaceHolder": "Please input your Fullname",
+      "PlaceHolder": "Please input your fullname",
       "max": 15,
       "order": 9
     },
@@ -20,12 +20,14 @@
     {
       "type": "email",
       "label": "Email",
+      "placeHolder": "Please input your email",
       "required": true,
       "order": 10
     },
     {
       "type": "number",
       "label": "Age",
+      "placeHolder": "Please input your age",
       "min": 18,
       "max": 100,
       "HelperText": "Age must be between 18 - 100"
@@ -33,6 +35,7 @@
     {
       "type": "dropdown",
       "label": "Industry",
+      "placeHolder": "Please input the Industry",
       "values": [ "Tech", "Production", "Health" ],
       "required": true
     },
@@ -40,6 +43,7 @@
       "type": "multidropdown",
       "label": "Preferred Work Options",
       "values": [ "Tech", "Production", "Health" ],
+      "placeHolder": "Please input the Work Options",
       "required": true,
       "HelperText": "You can choose more than one"
     },

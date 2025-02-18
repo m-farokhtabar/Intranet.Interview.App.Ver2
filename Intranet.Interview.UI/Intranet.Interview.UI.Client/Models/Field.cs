@@ -24,7 +24,7 @@ public class Field
     public bool? Required { get; set; }
     public int? Min { get; set; }
     /// <summary>
-    /// Max Value and also using for maxlenght for Text and email
+    /// Max Value and also using for maxlength for Text and email
     /// </summary>
     public int? Max { get; set; }
     /// <summary>
