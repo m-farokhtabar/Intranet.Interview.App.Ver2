@@ -1,0 +1,93 @@
+﻿@using Intranet.Interview.UI.Client.Model
+@using Intranet.Interview.UI.Client.Services
+@using System.ComponentModel.DataAnnotations
+
+<MudThemeProvider />
+<MudPopoverProvider />
+
+<MudForm @ref="form" @bind-IsValid="@success">
+    <MudText Typo="Typo.h5" GutterBottom="true">@MetaForm.Title</MudText>
+    <MudPaper Class="pa-4">        
+        @foreach (var field in MetaForm.Fields.OrderByDescending(x=>x.Order))
+        {
+            bool isRequired = field.Required is null ? false : field.Required.Value;
+            @switch (field.Type.ToLower())
+            {
+                case "text":
+                    <MudTextField Class="pa-2" Label="@field.Label" T="string" Placeholder="@field.PlaceHolder" @bind-Value="@field.StringValue"
+                                  Required="@isRequired" RequiredError="@($"{field.Label} is required")" Immediate="true" MaxLength="@(field.Max.HasValue && field.Max>0 ? field.Max.Value :  MaxLength)"
+                                  Validation="@(string.IsNullOrWhiteSpace(field.Pattern) ? null : new RegularExpressionAttribute(field.Pattern) {ErrorMessage = $"The {field.Label} is invalid"})"
+                                  HelperText="@field.HelperText" />
+                    break;
+                case "email":
+                    <MudTextField Class="pa-2" Label="@field.Label" T="string" Placeholder="@field.PlaceHolder" @bind-Value="@field.StringValue" Required="@isRequired" RequiredError="@($"{field.Label} is required")"
+                                  HelperText="@field.HelperText" Immediate="true" 
+                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = $"The {field.Label} is invalid"})" />
+                    break;
+                case "number":
+                    <MudNumericField Class="pa-2" Label="@field.Label" T="int?" Placeholder="@field.PlaceHolder" @bind-Value="@field.IntValue"
+                                     Min="@(!field.Min.HasValue ? 0 : field.Min.Value)" Max="@(!field.Max.HasValue ? 0 : field.Max.Value)"
+                                     Required="@isRequired" RequiredError="@($"{field.Label} is required")" Immediate="true" HelperText="@field.HelperText"
+                                     Validation="@(new RangeAttribute(!field.Min.HasValue ? 0 : field.Min.Value,!field.Max.HasValue ? 0 : field.Max.Value) {ErrorMessage = $"The value of {field.Label} is not in the range."})" />
+                    break;
+                case "dropdown":
+                    <MudSelect Class="pa-2" Label="@field.Label" T="string" @bind-Value="@field.StringValue"
+                               HelperText="@field.HelperText" Placeholder="@field.PlaceHolder"
+                               Required="@isRequired" RequiredError="@($"{field.Label} is required")">
+                        @foreach (var option in field.Values!)
+                        {
+                            <MudSelectItem T="string" Value="@option">@option</MudSelectItem>
+                        }
+                    </MudSelect>
+                    break;
+                case "multidropdown":
+                    <MudSelect Class="pa-2" Label="@field.Label" MultiSelection="true" T="string" @bind-SelectedValues="@field.SelectedValues"
+                               HelperText="@field.HelperText" Placeholder="@field.PlaceHolder" Immediate="true"
+                               Required="@isRequired" RequiredError="@($"{field.Label} is required")">
+                        @foreach (var option in field.Values!)
+                        {
+                            <MudSelectItem T="string" Value="@option">@option</MudSelectItem>
+                        }
+                    </MudSelect>
+                    break;
+                case "checkbox":
+                    <MudCheckBox Class="pa-2" T="bool" @bind-Value="@field.BoolValue" Label="@field.Label" Immediate="true" Required="@isRequired" RequiredError="@($"{field.Label} is required")" />
+                    break;                
+            }
+        }
+        <div class="d-flex align-center justify-space-between">
+            <MudButton OnClick="SubmitForm" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Submit</MudButton>            
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DropShadow="false" OnClick="@(()=>{resetMultiDropdown(); form.ResetAsync();})" Class="mx-2">Reset</MudButton>
+        </div>
+    </MudPaper>
+</MudForm>
+
+@code {
+    //Max length of textbox
+    private const int MaxLength = 4000;
+    public MudForm form { get; set; } = new MudForm();
+    [Parameter] public FormMetadata MetaForm { get; set; } = new FormMetadata();
+    [Parameter] public EventCallback OnSubmit { get; set; }
+    private bool success = false;
+
+    private async Task SubmitForm()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            await OnSubmit.InvokeAsync();
+            resetMultiDropdown();
+            await form.ResetAsync();
+            success = false;
+        }
+    }
+
+    private void resetMultiDropdown()
+    {
+        foreach (var field in MetaForm.Fields)
+        {
+            if (field.Type.ToLower() == "multidropdown")
+                field.SelectedValues = new HashSet<string?>();
+        }
+    }
+}

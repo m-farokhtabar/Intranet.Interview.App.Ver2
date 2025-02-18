@@ -1,0 +1,52 @@
+{
+  "title": "Sample Form",
+  "fields": [
+    {
+      "type": "text",
+      "label": "Name",
+      "required": true,
+      "PlaceHolder": "Please input your Fullname",
+      "max": 15,
+      "order": 9
+    },
+    {
+      "type": "text",
+      "label": "Phone",
+      "required": true,
+      "placeHolder": "Phone number e.g. 123-456-7890",
+      "pattern": "^(\\d{3})[- ]?(\\d{3})[- ]?(\\d{4})$",
+      "order": 8
+    },
+    {
+      "type": "email",
+      "label": "Email",
+      "required": true,
+      "order": 10
+    },
+    {
+      "type": "number",
+      "label": "Age",
+      "min": 18,
+      "max": 100,
+      "HelperText": "Age must be between 18 - 100"
+    },
+    {
+      "type": "dropdown",
+      "label": "Industry",
+      "values": [ "Tech", "Production", "Health" ],
+      "required": true
+    },
+    {
+      "type": "multidropdown",
+      "label": "Preferred Work Options",
+      "values": [ "Tech", "Production", "Health" ],
+      "required": true,
+      "HelperText": "You can choose more than one"
+    },
+    {
+      "type": "checkbox",
+      "label": "Subscribe to Newsletter",
+      "required": false
+    }
+  ]
+}

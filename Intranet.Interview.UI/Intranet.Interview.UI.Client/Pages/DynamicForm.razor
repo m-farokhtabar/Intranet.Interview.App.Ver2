@@ -1,0 +1,37 @@
+﻿@page "/dynamic-form"
+@using Intranet.Interview.UI.Client.Model
+@using Intranet.Interview.UI.Client.Services.FormSrv
+@* @rendermode InteractiveWebAssembly *@
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+@inject IFormService FormSrv
+@inject IDialogService DialogService
+
+<MudDialogProvider />
+<PageTitle>@metaForm?.Title</PageTitle>
+
+
+@if (metaForm is not null)
+{
+    <DataForm MetaForm="metaForm" OnSubmit="OnValidSubmit" />
+}
+
+@code {
+    private FormMetadata? metaForm = null;
+    private readonly DialogOptions option = new () { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {        
+        metaForm = await FormSrv.GetFormMeta();
+    }    
+    private void OnValidSubmit()
+    {        
+        string json = FormSrv.PostFormData(metaForm!.Fields);
+        string message = $"The {metaForm?.Title} has been saved successfully.";
+        var parameters = new DialogParameters
+        {
+            { "Message",  message},
+            { "Content", json}
+        };
+        DialogService.Show<Dialog>("Information Form", parameters, option);
+    }
+}

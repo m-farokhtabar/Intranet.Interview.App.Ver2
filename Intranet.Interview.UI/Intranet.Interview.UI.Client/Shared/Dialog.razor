@@ -1,0 +1,19 @@
+﻿<MudDialog>
+    <TitleContent>
+        Information
+    </TitleContent>
+    <DialogContent>        
+        @Message        
+        <p>@Content</p>
+    </DialogContent>
+    <DialogActions>        
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string Message { get; set; } = string.Empty;
+    [Parameter] public string Content { get; set; } = string.Empty;
+
+    private void Close() => MudDialog.Close();
+}
